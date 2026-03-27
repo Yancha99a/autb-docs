@@ -28,7 +28,7 @@ Author: [Cédric Lenoir](mailto:cedric.lenoir@hevs.ch)
 - [ARRAY, les tableaux de données](#array-les-tableaux-de-données)
     - [Définir les constantes dans: ```GVL_ARRAY_SIZE```.](#définir-les-constantes-dans-gvl_array_size)
     - [Définir les tableaux à l'aide des constantes.](#définir-les-tableaux-à-laide-des-constantes)
-    - [Utilser les boucles avec les constantes.](#utilser-les-boucles-avec-les-constantes)
+    - [Utiliser les boucles avec les constantes.](#utiliser-les-boucles-avec-les-constantes)
   - [Dans la pratique](#dans-la-pratique)
     - [Définir un tableau sous forme de type utilisateur.](#définir-un-tableau-sous-forme-de-type-utilisateur)
     - [Définir un tableau de types](#définir-un-tableau-de-types)
@@ -70,24 +70,25 @@ Author: [Cédric Lenoir](mailto:cedric.lenoir@hevs.ch)
     - [Un type pour une conversion two Modbus Word 2 Float](#un-type-pour-une-conversion-two-modbus-word-2-float)
   - [Big Endian vs Little Endian](#big-endian-vs-little-endian)
     - [Endianness](#endianness)
-- [Exercices](#exercices)
-  - [Exercice 1, Min/Max/RMS of ioBuffer](#exercice-1-minmaxrms-of-iobuffer)
-  - [Exercice 2, State Machine](#exercice-2-state-machine)
-    - [Contraintes:](#contraintes)
-  - [Exercice 3, Modbus avec ```Endianess```](#exercice-3-modbus-avec-endianess)
-  - [Exercice 4, VAR\_IN\_OUT with Extends](#exercice-4-var_in_out-with-extends)
-- [Solution des exercices](#solution-des-exercices)
-  - [Solution Exercice 1, Min/Max/RMS of ioBuffer](#solution-exercice-1-minmaxrms-of-iobuffer)
-    - [Codage](#codage-2)
-    - [Test](#test)
-  - [Solution Exercice 2, State Machine](#solution-exercice-2-state-machine)
-    - [Codage](#codage-3)
-  - [Solution Exercice 3, Modbus avec ```Endianess```](#solution-exercice-3-modbus-avec-endianess)
-    - [Liste des constantes dans le fichier ```GVL_Modbus```](#liste-des-constantes-dans-le-fichier-gvl_modbus)
-    - [Définition de l'union ```U_SolveModbus```](#définition-de-lunion-u_solvemodbus)
-    - [Définition de la structure générale](#définition-de-la-structure-générale)
-    - [Program](#program)
-  - [Solution Exerice 4, VAR\_IN\_OUT with Extends](#solution-exerice-4-var_in_out-with-extends)
+  - [Exercices](#exercices)
+    - [Exercice 1, Min/Max/RMS of ioBuffer](#exercice-1-minmaxrms-of-iobuffer)
+    - [Exercice 2, State Machine](#exercice-2-state-machine)
+      - [Contraintes:](#contraintes)
+    - [Exercice 3, Modbus avec ```Endianess```](#exercice-3-modbus-avec-endianess)
+    - [Exercice 4, VAR\_IN\_OUT with Extends](#exercice-4-var_in_out-with-extends)
+  - [Solution des exercices](#solution-des-exercices)
+    - [Solution Exercice 1, Min/Max/RMS of ioBuffer](#solution-exercice-1-minmaxrms-of-iobuffer)
+      - [Codage](#codage-2)
+      - [Test](#test)
+    - [Solution Exercice 2, State Machine](#solution-exercice-2-state-machine)
+      - [Enum](#enum)
+      - [Codage](#codage-3)
+    - [Solution Exercice 3, Modbus avec ```Endianess```](#solution-exercice-3-modbus-avec-endianess)
+      - [Liste des constantes dans le fichier ```GVL_Modbus```](#liste-des-constantes-dans-le-fichier-gvl_modbus)
+      - [Définition de l'union ```U_SolveModbus```](#définition-de-lunion-u_solvemodbus)
+      - [Définition de la structure générale](#définition-de-la-structure-générale)
+      - [Program](#program)
+    - [Solution Exerice 4, VAR\_IN\_OUT with Extends](#solution-exerice-4-var_in_out-with-extends)
 
 # Préambule
 ## Typage
@@ -118,7 +119,7 @@ Le caractère **statique** des variables dans un programme rédigé en IEC-61131
 ## Data User Type
 Dans certains langages comme Matlab, un type n’est qu’une classe parmi d’autres. En langage IEC 61131-3, nous avons des types de base, par exemple INT, REAL, BOOL. Mais aussi la possibilité de définir des types composés qui correspondent aux besoins de l’utilisateur.
 
-En mathématiques, on utilise aussi des types d’une certaines manière. Si l’on veut utiliser des nombres complexes pour travailler, par exemple, avec un oscillateur RLC on pourra définir un type utilisateur particulier.
+En mathématiques, on utilise aussi des types d’une certaine manière. Si l’on veut utiliser des nombres complexes pour travailler, par exemple, avec un oscillateur RLC on pourra définir un type utilisateur particulier.
 
 ```ìecst
 (*
@@ -153,7 +154,7 @@ De manière plus générale dans la suite de ce cours, on utilisera principaleme
 
 
 # Type conversion
-Le Structured Text (du moins son compilateur) est exigeant et contraignant en terme de conversion de types. **A raison !**
+Le Structured Text (du moins son compilateur) est exigeant et contraignant en termes de conversion de types. **A raison !**
 
 Exemple
 ```iecst
@@ -173,12 +174,12 @@ Exemple
 
 > Dans les deux cas, le résultat sera ```-1```. Dans le premier cas, le compilateur met en garde contre le risque. Dans le deuxième cas, le résultat sera le même, mais on peut supposer que le programmeur en implémentant explicitement la fonction de conversion aura pris conscience du risque d'un résultat qui pourrait être non désiré.
 
-L'environnement de développement propose des fonctions de conversion pour presque toutes les figures de conversion de données. C'est une bonne pratique de les utiliser systématiquement afin d'éviter une mulitplications des **Warning**.
+L'environnement de développement propose des fonctions de conversion pour presque toutes les figures de conversion de données. C'est une bonne pratique de les utiliser systématiquement afin d'éviter une multiplication des **Warning**.
 
 > Il n'est pas rare, et même très courant de constater que certains programmes génèrent beaucoup de **Warning**. Dans la plupart des cas, aucun ne sera critique. Le risque est toutefois de laisser passer **celui qui provoquera un crash**.
 
 # ARRAY, les tableaux de données
-On peut utiliser des données de 1, 2 voir 3 dimensions.
+On peut utiliser des données de 1, 2 voire 3 dimensions.
 > Les trois dimensions sont valables pour le compilateur Codesys. Pour d'autres types de compilateurs, ceci demande à être vérifié.
 
 ```iecst
@@ -200,9 +201,9 @@ FOR iMyLoop := 1 TO 10 BY 1 DO
     i_Array[iMyLoop] := iMyLoop;
 END_FOR
 ```
-> Le code ci-dessus, si il est parfaitement correct, ne devrait pas être utilisé, il n'est pas robuste ! Une bonne pratique consiste à utiliser des ```VAR GLOBAL CONSTANT``` pour les dimensions des tableaux, celles-ci seront réutilisées dans les boucles.
+> Le code ci-dessus, s'il est parfaitement correct, ne devrait pas être utilisé, il n'est pas robuste ! Une bonne pratique consiste à utiliser des ```VAR GLOBAL CONSTANT``` pour les dimensions des tableaux, celles-ci seront réutilisées dans les boucles.
 
-> Remarquez que, même pour une tâche autant simple qu'une boucle, on évite un variable du type **i**. Il s'agit ici d'une bonne pratique, et non d'une obligation. Raison: un variable i est compliquée à identifier dans le code.
+> Remarquez que, même pour une tâche autant simple qu'une boucle, on évite un variable du type **i**. Il s'agit ici d'une bonne pratique, et non d'une obligation. Raison: une variable i est compliquée à identifier dans le code.
 
 ### Définir les constantes dans: ```GVL_ARRAY_SIZE```.
 ```iecst
@@ -225,7 +226,7 @@ VAR
 ```
 > Les constantes sont définies dans un fichier séparé ```GVL_ARRAY_SIZE``` et demandent un accès sous la forme ```GVL_ARRAY_SIZE.MY_CONSTANT```. C'est un peu plus long à écrire, mais cela améliore la robustesse et la structure du programme.
 
-### Utilser les boucles avec les constantes.
+### Utiliser les boucles avec les constantes.
 ```iecst
 FOR iMyLoop := 1 TO GVL_ARRAY_SIZE.I_MAX_SIZE BY 1 DO
     i_Array[iMyLoop] := iMyLoop;
@@ -245,7 +246,7 @@ FOR iMyLoop := 1 TO GVL_ARRAY_SIZE.I_MAX_SIZE BY 1 DO
     END_FOR
 END_FOR
 ```
-> Attention au **temps de cylce** ! Une boucle **trop longue** peut provoque le **crash** du PLC. Si la marge est relativement élévé pour un processeur puissant, la limite peut être rapidement atteinte sur un PLC d'entrée de gamme.
+> Attention au **temps de cycle** ! Une boucle **trop longue** peut provoquer le **crash** du PLC. Si la marge est relativement élevée pour un processeur puissant, la limite peut être rapidement atteinte sur un PLC d'entrée de gamme.
 
 ## Dans la pratique
 Je n'utiliser presque jamais de tableaux à plusieurs dimensions, je privilégie les ```STRUCT``` qui sont développés un peu plus loin dans le cours.
@@ -290,7 +291,7 @@ Le **DUT**, **Data User Type**, en particulier la structure **[STRUCT](#structur
 > Un autre outil fondamental de la programmation orientée objet et l'utilisation du language **UML**, dans notre cas nous disposons du diagramme de classe éditable facilement avec **Mermaid Class Diagram**, voir un [exemple ci-dessous](#instanciation).
 
 # Data User Type, DUT
-Quel que soit l'environnement dans lequel est intégré un compilateur Codesys, on a la posibilité de sélection un **Add DUT**
+Quel que soit l'environnement dans lequel est intégré un compilateur Codesys, on a la possibilité de sélectionner un **Add DUT**
 - Structure
 - Enumeration
 - Alias
@@ -304,7 +305,7 @@ Quel que soit l'environnement dans lequel est intégré un compilateur Codesys, 
 
 # Structure
 Une structure permet d'organiser les variables par sujet de manière hiérarchiques.
-Contrairement à un **ARRAY** qui est une liste d'objets identiques, un structure peut contenir des variables différentes.
+Contrairement à un **ARRAY** qui est une liste d'objets identiques, une structure peut contenir des variables différentes.
 
 ## Forme simple d'une structure pour un axe.
 ### Définition de la structure
@@ -325,7 +326,7 @@ END_TYPE
 
 ### Valeur initiale
 
-> Si la grandeur est pertinente il est conseillé de donner une grandeur intiale. Une information du type **'Axe de base'** sera préférable à **' '**.
+> Si la grandeur est pertinente il est conseillé de donner une grandeur initiale. Une information du type **'Axe de base'** sera préférable à **' '**.
 
 ```iecst
 TYPE ST_AxisInfo :
@@ -424,7 +425,7 @@ STRUCT
 END_STRUCT
 END_TYPE
 ```
-Ci dessous, la représentation UML de ```ST_AxisInfo``` **composé** avec ```ST_AxisLimits```.
+Ci-dessous, la représentation UML de ```ST_AxisInfo``` **composé** avec ```ST_AxisLimits```.
 
 ```mermaid
 classDiagram
@@ -462,7 +463,7 @@ classDiagram
 
 > La définition des structures doit être une des premières étapes de tout programme PLC.
 - Cela permet de fixer rapidement la structure du programme. *Phase de spécification*
-- Cela accélére la phase de codage *Gain en productivité*
+- Cela accélère la phase de codage *Gain en productivité*
 - Cela simplifie la lisibilité du programme *Phase de maintenance*.
 
 ## Structure Extends
@@ -497,7 +498,7 @@ classDiagram
 
 La notion de Structure Extends permet de créer une structure existante à partir d'une nouvelle. En termes de programmation Orientée Objet, **OOP**, on parle d'héritage.
 
-Le but de cours n'est pas de rentrer dans les subtilités de l'approche orientée objet, mais d'en mentionner certaines caractéristiques quand elle facilite un programmation **Classique**.
+Le but de cours n'est pas de rentrer dans les subtilités de l'approche orientée objet, mais d'en mentionner certaines caractéristiques quand elle facilite une programmation **Classique**.
 
 ### Définition de la structure
 Dans l'exemple ci-dessous, le programmeur veut utiliser la structure ```ST_AxisInfo```, mais il veut simplement plus d'entrées à disposition et les ajoute à une nouvelle structure ```ST_AxisInfo_MoreInputs```.
@@ -514,7 +515,7 @@ END_TYPE
 
 
 ### Codage de structures avec Extends
-L'utilisation de Extends ne change strictement rien en termes de codage.
+L'utilisation de ``Extends`` ne change strictement rien en termes de codage.
 
 ```iecst
 VAR
@@ -723,17 +724,17 @@ TYPE EN_TrafficLight_typ :
 END_TYPE
 ```
 
-> Noter Idle à 99, c'est que si l'Enum n'est pas initalisé, il ne fonctionnera pas.
+> Noter Idle à 99, c'est que si l'Enum n'est pas initialisé, il ne fonctionnera pas.
 
 > Noter ) ``WORD`` := Rouge; **WORD** permet ici de forcer le type de base à utiliser pour l'Enum, par exemple pour un traitement numérique ou logique.
 
-> Noter qu'il est possible de fixer une valeur d'initilisation pour l'Enum. Ici: **Rouge**.
+> Noter qu'il est possible de fixer une valeur d'initialisation pour l'Enum. Ici: **Rouge**.
 
 # Alias
 Un alias est un type de données défini par l'utilisateur qui peut être utilisé pour créer un nom alternatif pour un type de données ou un bloc fonctionnel.
 
-Example:
-*On délare une chaine de 50 caractères *ascii**
+Exemple:
+*On déclare une chaine de 50 caractères *ascii**
 
 ```iecst
 TYPE T_Message : STRING[50];
@@ -850,7 +851,7 @@ Spécifie l'ordre dans lequel les séquences de **bytes** sont enregistrée en m
 |0xA1B2            |0xA1B2         |
 |```0xB2```, ```0xA1``` |```0xA1```, ```0xB2``` | 
 
-Concrètement pour une représentation ```Little-Endian``` sur un processeur **Intel**.
+Concrètement pour une représentation ```Little-Endian``` sur un processeur **Intel** ou **ARM**.
 ```
 VAR
    myBytes  : ARRAY[1..4] OF BYTE;
@@ -863,20 +864,26 @@ END_VAR
     myByte[4] := 16#0;
 ```
 
-# Exercices
+> Directly, **TCP/IP**, like most protocols, uses **big-endian** encoding due to the standardization done by [RFC 1700](https://www.rfc-editor.org/rfc/rfc1700). 
 
-## Exercice 1, Min/Max/RMS of ioBuffer
-Nous avons en variable globale un buffer de 50 valeurs venant d'un convertisseur 16 bits, valeurs positives ou négatives.
-La taille du buffer est fixée par une constante.
-A chaque cycle, le système fait l'aquisition de 50 valeurs, sampling rate 50 [kHz] avec un bus temps réel à 1 [kHz].
-A chaque cycle, nous voulons obetenir:
--   ```iMinSampleValue```, la grandeur minimum.
--   ```iMaxSampleValue```, la grandeur maximum.
--   ```iRMSSampleValue```, la grandeur RMS.
+---
+
+## Exercices
+
+### Exercice 1, Min/Max/RMS of ioBuffer
+1. Nous avons en variable globale un buffer de 50 valeurs venant d'un convertisseur 16 bits, valeurs positives ou négatives.
+1. La taille du buffer est fixée par une constante.
+1. A chaque cycle, le système fait l'acquisition de 50 valeurs, sampling rate 50 [kHz] avec un bus temps réel à 1 [kHz].
+1. A chaque cycle, nous voulons obetenir:
+   1.   ```iMinSampleValue```, la grandeur minimum.
+   1.   ```iMaxSampleValue```, la grandeur maximum.
+   1.   ```iRMSSampleValue```, la grandeur RMS.
 
 [Solution Exercice 1](#solution-exercice-1-minmaxrms-of-iobuffer)
 
-## Exercice 2, State Machine
+---
+
+### Exercice 2, State Machine
 Ecrire l'```Enum``` et la structure ```CASE_OF```, c'est à dire uniquement les états sans les transitions de la machine d'état ci-dessous.
 
 ```mermaid
@@ -898,16 +905,18 @@ stateDiagram-v2
 
 ```
 
-### Contraintes:
-- le premier état à la valeur 999.
-- les autres états ont une valeur fixe.
-- l'énumération est de type ```UDINT```
-- l'état initial est forcé à ```WAIT_RISING_EDGE```
-- la variable d'état du ```CASE_OF``` est ```stateCsv```.
+#### Contraintes:
+1. le premier état à la valeur 999.
+1. les autres états ont une valeur fixe.
+1. l'énumération est de type ```UDINT```
+1. l'état initial est forcé à ```WAIT_RISING_EDGE```
+1. la variable d'état du ```CASE_OF``` est ```stateCsv```.
 
 [Solution Exercice 2](#solution-exercice-2-state-machine)
 
-## Exercice 3, Modbus avec ```Endianess```
+---
+
+### Exercice 3, Modbus avec ```Endianess```
 Une série de registres Modbus sont donnés avec les informations suivantes.
 Format ```Big-Endian```.
 |Register      |Type      |Unit      |Description      |
@@ -925,7 +934,9 @@ Nous devons lire la trame ci-dessus avec un processeur Intel ```Little-Endian```
 
 [Solution Exercice 3](#solution-exercice-3-modbus-avec-endianess) 
 
-## Exercice 4, VAR_IN_OUT with Extends
+---
+
+### Exercice 4, VAR_IN_OUT with Extends
 Déclarer, instancier et coder l'exemple ci-dessus avec ```ST_AxisTwoEncoder```.
 
 ```mermaid
@@ -957,11 +968,13 @@ L'axe X était instancié sous la forme suivante:
  fbStopAxis_X(ioAxisInfo := stAxisInfo);
 ```
 
-[Solution Exerice 4](#solution-exerice-4-var_in_out-with-extends)
+[Solution Exercice 4](#solution-exerice-4-var_in_out-with-extends)
 
-# Solution des exercices
+---
 
-## Solution Exercice 1, Min/Max/RMS of ioBuffer
+## Solution des exercices
+
+### Solution Exercice 1, Min/Max/RMS of ioBuffer
 Fichier ```GVL_IO_BUFFER``` de déclaration des variables globales.
 ```iecst
 VAR_GLOBAL
@@ -972,7 +985,7 @@ VAR_GLOBAL CONSTANT
     IO_BUFFER_SIZE  : UDINT := 50;
 END_VAR
 ```
-### Codage
+#### Codage
 ```iecst
 PROGRAM PRG_MinMaxMean
 VAR
@@ -1001,11 +1014,11 @@ FOR iBufferLoop := 1 TO GVL_IO_BUFFER.IO_BUFFER_SIZE BY 1 DO
     iSumRMSValue := iSumRMSValue + (GVL_IO_BUFFER.ioBuffer[iBufferLoop] * GVL_IO_BUFFER.ioBuffer[iBufferLoop]);
 END_FOR
 
-// Values with 16 bits suppose no informatino lost
+// Values with 16 bits suppose no information lost
 iRMSValue := LREAL_TO_INT(SQRT(LINT_TO_LREAL(iSumRMSValue/GVL_IO_BUFFER.IO_BUFFER_SIZE)));
 ```
-### Test
-Avec tous les échantillons à 0, sauf:
+#### Test
+Avec tous les échantillons à 0, sauf :
 - un échantillon à 50
 - un échantillon à -50
 
@@ -1013,9 +1026,11 @@ iMinValue := -50
 iMaxValue := 50
 iRMSValue := 10
 
-## Solution Exercice 2, State Machine
+### Solution Exercice 2, State Machine
+
+#### Enum
+
 ```iecst
-### Enum
 TYPE EN_CSV_WriteSteps :
 (
 	WAIT_RISING_EDGE := 0,
@@ -1031,7 +1046,7 @@ TYPE EN_CSV_WriteSteps :
 ) UDINT := WAIT_RISING_EDGE;
 END_TYPE
 ```
-### Codage
+#### Codage
 ```iecst
 VAR
     stateCsv    : EN_CSV_WriteSteps; 
@@ -1061,8 +1076,8 @@ CASE stateCsv OF
 END_CASE
 ```
 
-## Solution Exercice 3, Modbus avec ```Endianess```
-### Liste des constantes dans le fichier ```GVL_Modbus```
+### Solution Exercice 3, Modbus avec ```Endianess```
+#### Liste des constantes dans le fichier ```GVL_Modbus```
 ```iecst
 VAR_GLOBAL CONSTANT
     MB_FRAME_SIZE     : INT := 12;
@@ -1070,7 +1085,7 @@ VAR_GLOBAL CONSTANT
     TYPE_SIZE_IN_BYTE : INT := 4;
 END_VAR
 ```
-### Définition de l'union ```U_SolveModbus```
+#### Définition de l'union ```U_SolveModbus```
 ```iecst
 TYPE U_SolveModbus :
 UNION
@@ -1079,7 +1094,7 @@ UNION
 END_UNION
 END_TYPE
 ```
-### Définition de la structure générale
+#### Définition de la structure générale
 ```iecst
 TYPE ST_SolveModbus :
 STRUCT
@@ -1090,7 +1105,7 @@ STRUCT
 END_STRUCT
 END_TYPE
 ```
-### Program
+#### Program
 ```iecst
 VAR
     modBusFrame : ARRAY[1..GVL_Modbus.MB_FRAME_SIZE] OF BYTE := [0, 8, 143, 237, 0, 41, 3, 189, 255, 254, 21, 231];
@@ -1127,16 +1142,16 @@ stResult.TotalReactiveEnergy_VARh := stResult.arMyRegisters[2].diMyResult;
 stResult.TotalApparentEnergy_VAh := stResult.arMyRegisters[3].diMyResult;
 ```
 
-## Solution Exerice 4, VAR_IN_OUT with Extends
+### Solution Exerice 4, VAR_IN_OUT with Extends
 
 Déclaration des structures
 
 ```iecst
 TYPE ST_SecondEncoder
 STRUCT
-	ActualPosition  : REAL;
-	ActualVelocity  : REAL := 0;
-	bAxisStopped    : BOOL;
+   ActualPosition  : REAL;
+   ActualVelocity  : REAL := 0;
+   bAxisStopped    : BOOL;
 END_STRUCT
 END_TYPE
 ```
@@ -1144,7 +1159,7 @@ END_TYPE
 ```iecst
 TYPE ST_AxisTwoEncoder EXTENDS ST_AxisInfo :
 STRUCT
-    stSecondEncoder : ST_SecondEncoder;
+   stSecondEncoder : ST_SecondEncoder;
 END_STRUCT
 END_TYPE
 ```
